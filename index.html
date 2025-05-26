@@ -11,56 +11,71 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Google Fonts & Icon -->
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Favicon -->
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3159/3159310.png" type="image/png">
 
   <style>
     body {
       font-family: 'Ubuntu', sans-serif;
-      background-image: url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6');
+      background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
     }
     .bg-overlay {
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
     .btn-success {
-      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      transition: all 0.3s ease-in-out;
     }
     .btn-success:hover {
       transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
     }
     select:focus, button:focus {
       outline: none !important;
       box-shadow: 0 0 0 0.25rem rgba(34, 197, 94, 0.5) !important;
     }
+    .fade-in {
+      animation: fadeInUp 0.8s ease both;
+    }
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   </style>
 </head>
 <body class="min-h-screen flex items-center justify-center px-4 py-8">
 
-  <div class="container bg-overlay p-6 md:p-8 rounded-3xl shadow-lg max-w-lg w-full text-center">
-    <h1 class="text-3xl md:text-4xl font-bold text-green-700 mb-4">🌿 Kuis Matematika</h1>
-    <p class="text-gray-700 mb-3 text-lg">Uji kemampuanmu dalam matematika dengan nuansa alam yang menyegarkan.</p>
+  <div class="container bg-overlay p-6 md:p-8 rounded-4 shadow-lg max-w-lg w-full text-center fade-in">
+    <h1 class="text-3xl md:text-4xl font-bold text-green-700 mb-3">🌿 Kuis Matematika</h1>
+    <p class="text-gray-700 mb-4 text-lg">Uji kemampuanmu dengan soal matematika yang menyenangkan dan menantang.</p>
 
-    <div class="mb-4">
-      <label for="level" class="block mb-2 font-medium text-gray-800 text-start">📚 Pilih Level:</label>
-      <select id="level" class="form-select text-center text-lg rounded-lg">
+    <div class="mb-4 text-start">
+      <label for="level" class="block mb-2 font-semibold text-gray-800">📚 Pilih Level:</label>
+      <select id="level" class="form-select text-lg rounded-lg shadow-sm focus:ring focus:ring-green-400">
         <option value="easy">🟢 Mudah</option>
         <option value="medium">🟡 Sedang</option>
         <option value="hard">🔴 Sulit</option>
       </select>
     </div>
 
-    <button onclick="startQuiz()" class="btn btn-success w-full py-2 text-lg rounded-lg shadow-md">
+    <button onclick="startQuiz()" class="btn btn-success w-full py-2 text-lg rounded-lg shadow">
       🚀 Mulai Kuis
     </button>
 
-    <p class="text-sm mt-5 text-gray-500">Dibuat dengan semangat 🌳 dan logika 📐</p>
+    <p class="text-sm mt-6 text-gray-500">Dibuat dengan semangat 🌳 dan logika 📐 oleh tim edukatif.</p>
   </div>
 
   <script>
