@@ -20,69 +20,163 @@
   <style>
     body {
       font-family: 'Ubuntu', sans-serif;
-      background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+      background: linear-gradient(to bottom right, rgba(34,197,94,0.3), rgba(16,185,129,0.4)),
+                  url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6') no-repeat center center / cover;
+      background-attachment: fixed;
+      animation: moveBg 60s linear infinite;
     }
-    .bg-overlay {
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+
+    @keyframes moveBg {
+      0% { background-position: 0% 0%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 0%; }
     }
+
+    .bg-glass {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 1.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      transition: all 0.4s ease;
+    }
+
+    .bg-glass:hover {
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
+      transform: translateY(-4px);
+    }
+
     .btn-success {
-      transition: all 0.3s ease-in-out;
+      background: linear-gradient(to right, #22c55e, #16a34a);
+      color: white;
+      font-weight: bold;
+      letter-spacing: 0.5px;
     }
+
     .btn-success:hover {
+      background: linear-gradient(to right, #16a34a, #15803d);
       transform: scale(1.05);
-      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+      box-shadow: 0 10px 25px rgba(34, 197, 94, 0.4);
     }
-    select:focus, button:focus {
-      outline: none !important;
-      box-shadow: 0 0 0 0.25rem rgba(34, 197, 94, 0.5) !important;
-    }
+
     .fade-in {
-      animation: fadeInUp 0.8s ease both;
+      animation: fadeInUp 0.9s ease both;
     }
+
     @keyframes fadeInUp {
-      0% {
+      from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px);
       }
-      100% {
+      to {
         opacity: 1;
         transform: translateY(0);
       }
     }
+
+    .select-transition:focus {
+      box-shadow: 0 0 0 0.25rem rgba(34, 197, 94, 0.45) !important;
+      border-color: #16a34a;
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: linear-gradient(to right, #22c55e, #16a34a);
+      width: 0;
+      border-radius: 100px;
+      transition: width 0.5s ease-in-out;
+    }
+
+    .typing::after {
+      content: '|';
+      animation: blink 0.8s infinite;
+      color: #16a34a;
+      font-weight: bold;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
   </style>
 </head>
-<body class="min-h-screen flex items-center justify-center px-4 py-8">
+<body class="min-h-screen flex items-center justify-center px-3 py-10">
 
-  <div class="container bg-overlay p-6 md:p-8 rounded-4 shadow-lg max-w-lg w-full text-center fade-in">
-    <h1 class="text-3xl md:text-4xl font-bold text-green-700 mb-3">🌿 Kuis Matematika</h1>
-    <p class="text-gray-700 mb-4 text-lg">Uji kemampuanmu dengan soal matematika yang menyenangkan dan menantang.</p>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-10 col-lg-6 bg-glass p-5 p-md-6 text-center shadow-lg fade-in ring-2 ring-white/20">
 
-    <div class="mb-4 text-start">
-      <label for="level" class="block mb-2 font-semibold text-gray-800">📚 Pilih Level:</label>
-      <select id="level" class="form-select text-lg rounded-lg shadow-sm focus:ring focus:ring-green-400">
-        <option value="easy">🟢 Mudah</option>
-        <option value="medium">🟡 Sedang</option>
-        <option value="hard">🔴 Sulit</option>
-      </select>
+        <h1 class="text-3xl md:text-5xl font-bold text-green-700 mb-3">
+          <span id="typed-title" class="typing"></span>
+        </h1>
+        <p class="text-gray-100 mb-4 text-base md:text-lg italic">
+          Asah logika & nikmati petualangan angka dari alam!
+        </p>
+
+        <!-- Pilih level -->
+        <div class="mb-4 text-start">
+          <label for="level" class="block mb-2 fw-semibold text-white">📚 Pilih Level:</label>
+          <select id="level" class="form-select text-base rounded-lg select-transition">
+            <option value="easy">🟢 Mudah (Dasar)</option>
+            <option value="medium">🟡 Sedang (Menengah)</option>
+            <option value="hard">🔴 Sulit (Tantangan)</option>
+          </select>
+        </div>
+
+        <!-- Tombol mulai -->
+        <button onclick="startQuiz()" id="startBtn" class="btn btn-success w-100 py-2 text-lg rounded-xl shadow transition-all">
+          🚀 Mulai Kuis Sekarang
+        </button>
+
+        <!-- Progress Bar -->
+        <div class="progress-container mt-4" style="display: none;">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <p class="text-sm mt-5 text-gray-200">
+          Dibuat dengan semangat 🌳 dan logika 📐 oleh tim edukatif.
+        </p>
+      </div>
     </div>
-
-    <button onclick="startQuiz()" class="btn btn-success w-full py-2 text-lg rounded-lg shadow">
-      🚀 Mulai Kuis
-    </button>
-
-    <p class="text-sm mt-6 text-gray-500">Dibuat dengan semangat 🌳 dan logika 📐 oleh tim edukatif.</p>
   </div>
 
+  <!-- Audio klik -->
+  <audio id="clickSound" src="click.mp3" preload="auto"></audio>
+
+  <!-- Script -->
   <script>
     function startQuiz() {
       const level = document.getElementById('level').value;
-      window.location.href = `quiz.html?level=${level}`;
+      const btn = document.getElementById('startBtn');
+      const bar = document.getElementById('progressBar');
+      const audio = document.getElementById('clickSound');
+
+      btn.disabled = true;
+      btn.innerText = "⏳ Memulai...";
+      document.querySelector(".progress-container").style.display = "block";
+
+      audio.play();
+      bar.style.width = "100%";
+
+      setTimeout(() => {
+        window.location.href = `quiz.html?level=${level}`;
+      }, 1600);
     }
+
+    const text = "Kuis Matematika";
+    const titleEl = document.getElementById("typed-title");
+    let index = 0;
+
+    function typeText() {
+      if (index < text.length) {
+        titleEl.textContent += text.charAt(index);
+        index++;
+        setTimeout(typeText, 100);
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", typeText);
   </script>
 
 </body>
